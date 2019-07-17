@@ -73,12 +73,12 @@ p2papi.on('connection', (ws, req) => {
         } else {
             console.log('Network ID hashes do not match, disconnecting...');
 
-            setTimeout(() => ws.send(JSON.stringify({
+            ws.send(JSON.stringify({
                 networkIdHash: Config.networkIdHash,
                 data: {
                     action: 'authenticationFailed'
                 }
-            })), 500);
+            }));
             ws.terminate();
         }
     });
@@ -147,12 +147,12 @@ function addNode(nodeData) {
             } else {
                 console.log('Network ID hashes do not match, disconnecting...');
 
-                setTimeout(() => newNode.send(JSON.stringify({
+                newNode.send(JSON.stringify({
                     networkIdHash: Config.networkIdHash,
                     data: {
                         action: 'authenticationFailed'
                     }
-                })), 500);
+                }));
                 newNode.terminate();
             }
         });
