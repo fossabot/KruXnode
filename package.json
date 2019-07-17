@@ -1,0 +1,31 @@
+{
+  "name": "kruxnode",
+  "version": "0.1.0",
+  "description": "Node for KruXCore",
+  "main": "app.js",
+  "scripts": {
+    "test": "./node_modules/.bin/eslint ."
+  },
+  "keywords": [
+    "KruX",
+    "blockchain",
+    "cryptocurrency",
+    "crypto"
+  ],
+  "author": "TheDevMinerTV",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "crypto-js": "^3.1.9-1",
+    "death": "^1.1.0",
+    "elliptic": "^6.5.0",
+    "express": "^4.17.1",
+    "inquirer": "^6.5.0",
+    "kruxcorelib": "git+https://github.com/KruX-Core/KruXCore-lib.git",
+    "systeminformation": "^4.14.3",
+    "ws": "^7.1.0"
+  },
+  "devDependencies": {
+    "eslint": "6.0.1"
+  }
+}
