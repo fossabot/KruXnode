@@ -50,7 +50,7 @@ p2papi.on('connection', (ws, req) => {
 
         if (msgJson.networkIdHash === Config.networkIdHash) {
             console.log('Network ID hashes matched, continuing...');
-            console.log(`Incoming message from ${req.connection.remoteAddress}: ${JSON.stringify(msgJson.data)}`);
+            console.log(`Incoming message from ${req.connection.remoteAddress}}:${req.connection.remotePort}: ${JSON.stringify(msgJson.data)}`);
 
             switch (msgJson.data.action) {
             case 'authenticationStarted':
@@ -66,16 +66,26 @@ p2papi.on('connection', (ws, req) => {
             case 'authenticationSuccess':
                 console.log('Authentication succeeded!');
                 break;
+            case 'authenticationFailed':
+                console.log('Authentication failed!');
+                break;
             }
         } else {
             console.log('Network ID hashes do not match, disconnecting...');
+
+            setTimeout(() => ws.send(JSON.stringify({
+                networkIdHash: Config.networkIdHash,
+                data: {
+                    action: 'authenticationFailed'
+                }
+            })), 500);
             ws.terminate();
         }
     });
 
     ws.on('close', () => console.log(`${req.connection.remoteAddress} disconnected`));
 
-    console.log(`Incoming connection from ${req.connection.remoteAddress}!`);
+    console.log(`Incoming connection from ${req.connection.remoteAddress}:${req.connection.remotePort}!`);
 });
 
 
@@ -114,7 +124,7 @@ function addNode(nodeData) {
 
             if (msgJson.networkIdHash === Config.networkIdHash) {
                 console.log('Network ID hashes matched, continuing...');
-                console.log(`Incoming message from ${nodeData.address}: ${JSON.stringify(msgJson.data)}`);
+                console.log(`Incoming message from ${nodeData.address}:${nodeData.port}: ${JSON.stringify(msgJson.data)}`);
 
                 switch (msgJson.data.action) {
                 case 'authenticationStarted':
@@ -130,9 +140,19 @@ function addNode(nodeData) {
                 case 'authenticationSuccess':
                     console.log('Authentication succeeded!');
                     break;
+                case 'authenticationFailed':
+                    console.log('Authentication failed!');
+                    break;
                 }
             } else {
                 console.log('Network ID hashes do not match, disconnecting...');
+
+                setTimeout(() => newNode.send(JSON.stringify({
+                    networkIdHash: Config.networkIdHash,
+                    data: {
+                        action: 'authenticationFailed'
+                    }
+                })), 500);
                 newNode.terminate();
             }
         });
